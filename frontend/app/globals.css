@@ -4,16 +4,18 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Updated to use the new design system color values while preserving green theme */
   --background: oklch(0.11 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.18 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.18 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.55 0.15 160);
+  --primary: oklch(56.002% 0.13491 156.379);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
+  /* Updated secondary to yellowish green for employer button */
+  --secondary: oklch(0.65 0.18 120);
+  --secondary-foreground: oklch(0.11 0 0);
   --muted: oklch(0.32 0 0);
   --muted-foreground: oklch(0.7 0 0);
   --accent: oklch(0.6 0.15 160);
@@ -37,6 +39,13 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.25 0 0);
   --sidebar-ring: oklch(0.55 0.15 160);
+
+  /* Preserved custom hacker-themed color variables with updated green values */
+  /* Updated matrix animation to use yellowish green */
+  --neon-green: oklch(0.65 0.18 120);
+  --neon-green-dark: oklch(0.6 0.15 160);
+  --matrix-bg: oklch(0.03 0 0);
+  --glow-green: oklch(0.65 0.18 120 / 0.3);
 }
 
 .dark {
@@ -48,8 +57,9 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.55 0.15 160);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
+  /* Updated secondary to yellowish green for employer button */
+  --secondary: oklch(0.65 0.18 120);
+  --secondary-foreground: oklch(0.11 0 0);
   --muted: oklch(0.32 0 0);
   --muted-foreground: oklch(0.7 0 0);
   --accent: oklch(0.6 0.15 160);
@@ -111,6 +121,16 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Preserved custom hacker theme tokens */
+  --color-neon-green: var(--neon-green);
+  --color-neon-green-dark: var(--neon-green-dark);
+  --color-matrix-bg: var(--matrix-bg);
+  --color-glow-green: var(--glow-green);
+
+  /* Added Fira Code font configuration */
+  --font-mono: "Fira Code", ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
 }
 
 @layer base {
@@ -120,4 +140,82 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Preserved custom animations and effects for hacker aesthetic */
+@keyframes matrix-rain {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes matrix-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 8px currentColor;
+  }
+  50% {
+    text-shadow: 0 0 15px currentColor, 0 0 20px currentColor;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  }
+  50% {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: currentColor;
+  }
+}
+
+.matrix-rain {
+  animation: matrix-rain 3s linear infinite, matrix-glow 1.5s ease-in-out infinite;
+  color: oklch(0.65 0.18 120);
+  /* Increased opacity from 0.9 to 2 for maximum visibility */
+  opacity: 2;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.glow-text {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40, end), blink-caret 0.75s step-end infinite;
 }

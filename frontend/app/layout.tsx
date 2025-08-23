@@ -1,26 +1,19 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Montserrat } from "next/font/google"
+import { Fira_Code } from "next/font/google"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "./globals.css"
 
-const inter = Inter({
+const firaCode = Fira_Code({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
-})
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-montserrat",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-fira-code",
 })
 
 export const metadata: Metadata = {
-  title: "Valecta - Modern Job Platform",
-  description: "AI-powered job portal with intelligent resume analysis and interview system",
+  title: "Valecta - AI-Powered Interviews",
+  description: "Redefining recruitment with AI-powered interviews. Smarter hiring. Better preparation.",
   generator: "v0.app",
 }
 
@@ -30,22 +23,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${montserrat.variable} dark`}>
-      <body className="font-sans antialiased">
-        {children}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </body>
+    <html lang="en" className={`dark ${firaCode.variable}`}>
+      <body className="antialiased font-mono">{children}</body>
     </html>
   )
 }
