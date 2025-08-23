@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import LineBackground from "@/components/ui/LineBackground";
+
 import { usePathname } from "next/navigation";
 
 export default function LayoutWithBackground({ children }: { children: React.ReactNode }) {
@@ -9,7 +9,6 @@ export default function LayoutWithBackground({ children }: { children: React.Rea
   const isLanding = pathname === "/";
   return (
     <>
-      {!isLanding && <LineBackground />}
       {children}
     </>
   );
