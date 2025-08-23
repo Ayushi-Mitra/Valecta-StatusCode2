@@ -14,7 +14,7 @@ export default function ValectaLanding() {
   const [matrixRain, setMatrixRain] = useState<any[]>([])
   const router = useRouter()
 
-  const typewriterLines = ["AI-powered interviews.", "Smarter hiring. Better preparation.", "Redefining recruitment."]
+  const typewriterLines = ["Where potential meets precision","AI-powered interviews", "Redefining recruitment"]
 
   const matrixChars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン"
 
