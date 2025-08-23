@@ -227,14 +227,7 @@ export default function CandidateJobsPage() {
     return `${Math.ceil(diffDays / 30)} months ago`;
   };
 
-  // Calculate match score (placeholder - you can implement actual matching logic)
-  const calculateMatchScore = () => {
-    // This is a placeholder. In a real app, you would:
-    // 1. Get candidate's skills/preferences from their profile
-    // 2. Compare with job requirements
-    // 3. Calculate actual match percentage
-    return Math.floor(Math.random() * 20) + 80; // Random score between 80-99
-  };
+
 
   if (loading) {
     return (
@@ -395,10 +388,10 @@ export default function CandidateJobsPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Ranges</SelectItem>
-                        <SelectItem value="50-80">$50k - $80k</SelectItem>
-                        <SelectItem value="80-120">$80k - $120k</SelectItem>
-                        <SelectItem value="120-160">$120k - $160k</SelectItem>
-                        <SelectItem value="160+">$160k+</SelectItem>
+                        <SelectItem value="50-80">₹50k - ₹80k</SelectItem>
+                        <SelectItem value="80-120">₹80k - ₹120k</SelectItem>
+                        <SelectItem value="120-160">₹120k - ₹160k</SelectItem>
+                        <SelectItem value="160+">₹160k+</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -468,7 +461,6 @@ export default function CandidateJobsPage() {
             ) : (
               <div className="grid gap-4">
                 {filteredJobs.map((jobItem) => {
-                  const matchScore = calculateMatchScore();
                   const isRemote = jobItem.location
                     .toLowerCase()
                     .includes("remote");
@@ -485,9 +477,6 @@ export default function CandidateJobsPage() {
                               <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                                 {jobItem.role}
                               </h3>
-                              <Badge variant="secondary" className="text-xs">
-                                {matchScore}% match
-                              </Badge>
                               {isRemote && (
                                 <Badge variant="outline" className="text-xs">
                                   Remote
@@ -511,7 +500,7 @@ export default function CandidateJobsPage() {
                             {jobItem.location || "Not specified"}
                           </div>
                           <div className="flex items-center gap-1">
-                            <DollarSign className="h-4 w-4" />
+                            <span className="text-lg">₹</span>
                             {jobItem.salary || "Negotiable"}
                           </div>
                           <div className="flex items-center gap-1">

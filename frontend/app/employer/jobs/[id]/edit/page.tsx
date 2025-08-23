@@ -34,7 +34,7 @@ export default function EditJobPage() {
       "1": {
         title: "Senior Frontend Developer",
         location: "San Francisco, CA",
-        salary: "$120k - $160k",
+        salary: "₹120k - ₹160k",
         type: "Full-time",
         description:
           "Join our innovative team building cutting-edge web applications with modern technologies. You'll work on challenging projects that impact millions of users worldwide.",
@@ -45,7 +45,7 @@ export default function EditJobPage() {
       "2": {
         title: "AI/ML Engineer",
         location: "Remote",
-        salary: "$140k - $180k",
+        salary: "₹140k - ₹180k",
         type: "Full-time",
         description:
           "Build next-generation AI systems that power our platform. Work with cutting-edge machine learning technologies and contribute to groundbreaking AI research.",
@@ -133,7 +133,7 @@ export default function EditJobPage() {
                   <Input
                     value={formData.salary}
                     onChange={(e) => handleInputChange("salary", e.target.value)}
-                    placeholder="e.g. $120k - $160k"
+                    placeholder="e.g. ₹120k - ₹160k"
                   />
                 </div>
 
@@ -213,7 +213,7 @@ export default function EditJobPage() {
                             {formData.location || "Location"}
                           </span>
                           <span className="flex items-center gap-1">
-                            <DollarSign className="h-4 w-4" />
+                            <span className="text-lg">₹</span>
                             {formData.salary || "Salary Range"}
                           </span>
                           <span className="flex items-center gap-1">

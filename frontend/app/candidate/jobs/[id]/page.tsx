@@ -73,6 +73,7 @@ export default function JobDetailsPage() {
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   // Get current user
   useEffect(() => {
@@ -537,20 +538,28 @@ export default function JobDetailsPage() {
                 {/* Terms and Conditions */}
                 <div className="border-t pt-6">
                   <div className="flex items-start gap-3">
-                    <input type="checkbox" className="mt-1" />
+                    <input
+                      type="checkbox"
+                      className="mt-1"
+                      checked={agreedToTerms}
+                      onChange={e => setAgreedToTerms(e.target.checked)}
+                      id="terms-checkbox"
+                    />
                     <div className="text-sm text-muted-foreground">
-                      <p>
-                        I confirm that the information provided is accurate and
-                        I agree to the{" "}
-                        <button className="text-primary hover:underline">
-                          Terms of Service
-                        </button>{" "}
-                        and{" "}
-                        <button className="text-primary hover:underline">
-                          Privacy Policy
-                        </button>
-                        .
-                      </p>
+                      <label htmlFor="terms-checkbox" className="cursor-pointer">
+                        <p>
+                          I confirm that the information provided is accurate and
+                          I agree to the{" "}
+                          <button type="button" className="text-primary hover:underline">
+                            Terms of Service
+                          </button>{" "}
+                          and{" "}
+                          <button type="button" className="text-primary hover:underline">
+                            Privacy Policy
+                          </button>
+                          .
+                        </p>
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -567,7 +576,7 @@ export default function JobDetailsPage() {
                 </Button>
                 <Button
                   onClick={handleSubmitApplication}
-                  disabled={applying || !selectedFile}
+                  disabled={applying || !selectedFile || !agreedToTerms}
                   className="bg-primary hover:bg-primary/90"
                 >
                   {applying ? (

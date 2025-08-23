@@ -213,7 +213,7 @@ export default function CreateJobPage() {
                   <div>
                     <label className="text-sm font-medium text-muted-foreground mb-2 block">Salary Expectation</label>
                     <Input
-                      placeholder="e.g. $120k - $160k"
+                      placeholder="e.g. ₹120k - ₹160k"
                       value={formData.salary}
                       onChange={(e) => handleInputChange("salary", e.target.value)}
                     />
@@ -321,8 +321,8 @@ export default function CreateJobPage() {
 
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
-                        <DollarSign className="h-4 w-4" />
-                        {formData.salary || "$120k - $160k"}
+                        <span className="text-lg">₹</span>
+                        {formData.salary || "₹120k - ₹160k"}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
