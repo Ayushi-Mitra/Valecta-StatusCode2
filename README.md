@@ -6,8 +6,8 @@ Valecta is a dual-sided web platform for Candidates and Employers. Candidates ca
 
 ### Current Status
 
-- Frontend (Next.js App Router) is scaffolded. UI components (badge, button, card, FloatingShapes, HeroSection, LineBackground, avatar, dialog, input, progress, select, separator, tabs, textarea) are implemented. Employer and job management pages/routes have been added (`/employer`, `/employer/jobs/create`, `/employer/jobs/[id]/edit`). Utility/config files and static assets are present.
-- AI module (Python) includes initial plagiarism detection logic in `plagiarism/final.py`, sample resume data in `plagiarism/Resume.csv`, and a new `interview.py` file for upcoming AI interview logic. No integration yet; skill extraction is planned next.
+- Frontend (Next.js App Router) scaffolded with landing, auth, employer sections, and initial candidate dashboard (`/candidate/dashboard`). Rich UI component set implemented (badge, button, card, FloatingShapes, HeroSection, LineBackground, avatar, dialog, input, progress, select, separator, tabs, textarea). Employer job creation and edit routes exist (`/employer/jobs/create`, `/employer/jobs/[id]/edit`). Utilities/config and styling assets in place.
+- AI module (Python) includes: plagiarism detection (`plagiarism/final.py`), sample resume dataset (`plagiarism/Resume.csv`), initial interview scaffold (`interview.py`), and higher-level orchestration / skill extraction scaffolding in `main.py`. Environment configuration via `.env` (not committed) and dependencies in `requirements.txt`. Integration with frontend not yet implemented.
 
 ## Key Features (Planned)
 
@@ -30,11 +30,13 @@ Valecta is a dual-sided web platform for Candidates and Employers. Candidates ca
 
 ```text
 ai/
+  .env                # local (not committed) environment variables (e.g. API keys)
   requirements.txt
-  interview.py
+  main.py             # skill extraction, JD match, career path logic (OpenAI)
+  interview.py        # scaffold for interview flow (future)
   plagiarism/
-    final.py
-    Resume.csv
+    final.py          # plagiarism + certificate verification logic
+    Resume.csv        # sample resume dataset
 
 frontend/
   app/
@@ -47,6 +49,9 @@ frontend/
     page.tsx
     auth/
       page.tsx
+    candidate/
+      dashboard/
+        page.tsx
     employer/
       jobs/
         create/
@@ -107,14 +112,12 @@ npm run dev
 # App runs on http://localhost:3000
 ```
 
-Candidate routes (available today):
+Candidate routes (currently scaffolded):
 
 - `/` — Landing page
-- `/auth` — Simple role/entry selection
-- `/candidate/dashboard` — Candidate dashboard
-- `/candidate/jobs` — Job listings
-- `/candidate/jobs/[id]` — Job details
-- `/candidate/profile` — Candidate profile
+- `/auth` — Role selection
+- `/candidate/dashboard` — Initial candidate dashboard
+  (Other candidate job / profile routes planned but not yet in repo)
 
 Header behavior:
 

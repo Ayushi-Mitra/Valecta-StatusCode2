@@ -51,7 +51,49 @@ def extract_resume_text(file_path):
 # --- 3. Extract URLs from Resume ---
 def extract_urls(text):
     url_pattern = r'https?://[^\s,]+'
-    return re.findall(url_pattern, text)
+    all_urls = re.findall(url_pattern, text)
+    if not all_urls:
+        return []
+    from urllib.parse import urlparse
+    allowed_domains = {
+        "coursera.org",
+        "udemy.com",
+        "edx.org",
+        "linkedin.com",  # We'll further check path for learning
+        "freecodecamp.org",
+        "datacamp.com",
+        "hackerrank.com",
+        "leetcode.com",
+        "aws.amazon.com",
+        "microsoft.com",
+        "cloud.google.com",
+        "hubspot.com",
+        "comptia.org",
+        "isc2.org",
+    }
+    filtered = []
+    for u in all_urls:
+        try:
+            parsed = urlparse(u)
+            host = parsed.netloc.lower()
+            # Strip leading www.
+            if host.startswith("www."):
+                host_core = host[4:]
+            else:
+                host_core = host
+            if host_core not in allowed_domains:
+                continue
+            # For linkedin restrict to /learning or /feed/update with certificates optionally
+            if host_core == "linkedin.com":
+                if not (parsed.path.startswith("/learning") or "/learning/" in parsed.path):
+                    continue
+            # For hubspot ensure academy in path
+            if host_core == "hubspot.com" and "academy" not in parsed.path.lower():
+                continue
+            filtered.append(u)
+        except Exception:
+            continue
+    return filtered
 
 # --- 4. Plagiarism Check (Resume) ---
 def check_similarity(uploaded_resume_text, threshold=0.75, source="resume"):
