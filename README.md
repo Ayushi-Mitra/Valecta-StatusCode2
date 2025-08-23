@@ -1,192 +1,129 @@
-# Valecta-StatusCode2
+# Valecta
 
-## Valecta — AI-Powered Hiring Platform
+Valecta is an AI-powered recruitment platform built for StatusCode 2 Hackathon.  
+It bridges the gap between **candidates** and **employers** with a seamless, automated, and trustworthy hiring process — while still keeping the final decision human.  
 
-Valecta is a dual-sided web platform for Candidates and Employers. Candidates can upload resumes for an AI-powered plagiarism check. If the resume passes, the candidate can take an AI interview. A confidence score is generated from that interview and is visible only to the employer.
+---
 
-### Current Status
+## ✨ Features
 
-- Frontend (Next.js App Router) scaffolded with landing, auth, employer sections, and initial candidate dashboard (`/candidate/dashboard`). Rich UI component set implemented (badge, button, card, FloatingShapes, HeroSection, LineBackground, avatar, dialog, input, progress, select, separator, tabs, textarea). Employer job creation and edit routes exist (`/employer/jobs/create`, `/employer/jobs/[id]/edit`). Utilities/config and styling assets in place.
-- AI module (Python) includes: plagiarism detection (`plagiarism/final.py`), sample resume dataset (`plagiarism/Resume.csv`), initial interview scaffold (`interview.py`), and higher-level orchestration / skill extraction scaffolding in `main.py`. Environment configuration via `.env` (not committed) and dependencies in `requirements.txt`. Integration with frontend not yet implemented.
+### 👨‍💻 Candidate Workflow
+- Browse job postings and apply with a resume.  
+- AI verifies:
+  - **Skill match** – checks if required skills align with the resume.  
+  - **Certificate authenticity** – prevents fake/plagiarized resumes.  
+- If validated, candidate proceeds to an **AI-powered interview**:
+  - Audio-based adaptive questions (each depends on the previous response).  
+  - Candidate receives a **confidence score** (only visible to employers).  
+- Upload resume for **AI career mapping**:
+  - Suggested **current job opportunities**.  
+  - **Future role recommendations** with personalized roadmaps.  
 
-## Key Features (Planned)
+### 🏢 Employer Workflow
+- Post job vacancies with minimal input.  
+- AI automatically evaluates candidates and assigns confidence scores.  
+- Employers view:
+  - Candidate list + confidence scores.  
+  - One-click **“Hire”** action — blending automation with human choice.  
 
-- Candidate
-  - Upload resume for AI plagiarism screening
-  - AI extracts skills and provides career path suggestions
-  - If the resume passes plagiarism checks, proceed to an AI interview
-  - Interview generates a confidence score (not visible to the candidate)
-- Employer
-  - View applicants for a role
-  - See AI-generated confidence score per candidate
-  - Future: job posting and management
+---
 
-## Tech Stack
+## 🚀 Tech Stack
+- **Frontend**: Next.js, Tailwind CSS, ShadCN UI  
+- **Backend**: Node.js / Express  
+- **AI Models**: Python (skills matcher, certificate verification, adaptive interview agent, career roadmap generator)  
+- **Database & Auth**: Appwrite  
+- **Deployment**: Vercel + Render (or relevant hosting services)  
 
-- Frontend: Next.js (App Router), TypeScript, TailwindCSS, shadcn/ui, lucide-react
-- AI Service: Python, OpenAI API, Pydantic, python-dotenv
+---
 
-## Repository Structure
-
-```text
-ai/
-  .env                # local (not committed) environment variables (e.g. API keys)
-  requirements.txt
-  main.py             # skill extraction, JD match, career path logic (OpenAI)
-  interview.py        # scaffold for interview flow (future)
-  plagiarism/
-    final.py          # plagiarism + certificate verification logic
-    Resume.csv        # sample resume dataset
+## 📂 Project Structure
 
 frontend/
-  app/
-    appwrite.js
-    favicon.ico
-    globals.css
-    layout.tsx
-    lineBackground.css
-    loading.tsx
-    page.tsx
-    auth/
-      page.tsx
-    candidate/
-      dashboard/
-        page.tsx
-    employer/
-      jobs/
-        create/
-          page.tsx
-        [id]/
-          edit/
-            page.tsx
-      loading.tsx
-      page.tsx
-  components/
-    ui/
-      avatar.tsx
-      badge.tsx
-      button.tsx
-      card.tsx
-      dialog.tsx
-      FloatingShapes.tsx
-      HeroSection.tsx
-      input.tsx
-      LineBackground.tsx
-      progress.tsx
-      select.tsx
-      separator.tsx
-      tabs.tsx
-      textarea.tsx
-  lib/
-    config.ts
-    utils.ts
-  public/
-    file.svg
-    globe.svg
-    next.svg
-    vercel.svg
-    window.svg
-  package.json
-  package-lock.json
-  tsconfig.json
-  eslint.config.mjs
-  postcss.config.mjs
-  next.config.ts
-  components.json
-```
+├── app/
+│   ├── appwrite.js
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── lineBackground.css
+│   ├── loading.tsx
+│   ├── page.tsx                # Landing page
+│   ├── auth/
+│   │   ├── candidate/
+│   │   │   └── page.tsx        # Candidate login/signup
+│   │   ├── employer/
+│   │   │   └── page.tsx        # Employer login/signup
+│   │   └── page.tsx            # (Legacy, not used)
+│   ├── employer/
+│   │   ├── loading.tsx
+│   │   ├── page.tsx            # Employer dashboard
+│   │   └── jobs/
+│   │       ├── [id]/
+│   │       │   └── edit/
+│   │       │       └── page.tsx
+│   │       └── create/
+│   │           └── page.tsx
+│   ├── candidate/
+│   │   ├── path-predictor/
+│   │   │   └── page.tsx
+│   │   └── dashboard/
+│   │       └── page.tsx        # Candidate dashboard
+│   └── components/
+│       └── ui/
+│           ├── avatar.tsx
+│           ├── badge.tsx
+│           ├── button.tsx
+│           ├── card.tsx
+│           ├── decrypted-text.tsx
+│           ├── dialog.tsx
+│           ├── FloatingShapes.tsx
+│           ├── HeroSection.tsx
+│           ├── input.tsx
+│           ├── LineBackground.tsx
+│           ├── progress.tsx
+│           ├── select.tsx
+│           ├── separator.tsx
+│           ├── tabs.tsx
+│           └── textarea.tsx
+│   ├── lib/
+│   │   ├── config.ts
+│   │   └── utils.ts
+│   └── public/
+│       ├── file.svg
+│       ├── globe.svg
+│       ├── next.svg
+│       ├── vercel.svg
+│       └── window.svg
+├── components.json
+├── eslint.config.mjs
+├── next-env.d.ts
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── README.md
+├── tsconfig.json
 
-## Local Setup
+ai/
+├── interview.py
+├── requirements.txt
+└── plagiarism/
+    ├── final.py
+    ├── Resume.csv
 
-### Prerequisites
+README.md
 
-- Node.js 18+
-- Python 3.10+
-- An OpenAI API key
+---
 
-### 1) Frontend
+## 🏆 Why Valecta?
+- **Real-world relevance** → Tackles one of the biggest problems in hiring: resume fraud + skill mismatch.  
+- **End-to-end automation** → From resume parsing to interview to employer shortlist.  
+- **Scalable** → Can be deployed for universities, startups, and enterprises.  
+- **Perfect balance** → AI handles the heavy lifting, but final hiring choice stays human.  
 
-```bash
-cd frontend
-npm install
-npm run dev
-# App runs on http://localhost:3000
-```
+---
 
-Candidate routes (currently scaffolded):
-
-- `/` — Landing page
-- `/auth` — Role selection
-- `/candidate/dashboard` — Initial candidate dashboard
-  (Other candidate job / profile routes planned but not yet in repo)
-
-Header behavior:
-
-- Clicking the brand/logo navigates to `/candidate/dashboard` (except on the landing page)
-- User menu contains a red “Log out” option (clears local auth token and returns to `/`)
-
-### 2) AI Service
-
-Create and configure a virtual environment (optional but recommended), then install dependencies:
-
-```bash
-cd ai
-pip install -r requirements.txt
-```
-
-What it does today:
-
-- Plagiarism detection logic is present in `plagiarism/final.py` (see code for usage)
-- Sample resume data is available in `plagiarism/Resume.csv`
-- `interview.py` is present for future AI interview logic
-
-Planned next:
-
-- Integrate skill extraction and implement AI interview logic in `interview.py`
-- Expose API endpoints for the frontend to consume
-
-## Product Flows
-
-### Candidate Flow
-
-1. Visit `/auth`, choose “Candidate”, sign in or continue
-2. Upload resume → AI plagiarism check
-3. If passed → AI interview
-4. Score generated and stored server-side (not shown to candidate)
-
-### Employer Flow
-
-1. Visit `/auth`, choose “Employer”
-2. View candidates that applied to a job
-3. See the AI confidence score per candidate (visible only to employers)
-
-## Privacy & Visibility
-
-- The AI interview confidence score is stored for employer visibility only
-- Candidate UI must not display the score
-
-## Development Notes
-
-- The current code uses local storage for a basic “authToken” placeholder in the UI. Replace with real auth in production.
-- Frontend and AI service are currently separate. Integration points will include:
-  - Resume upload endpoint (plagiarism check + skill extraction)
-  - Interview orchestration endpoint (session state + question flow + scoring)
-  - Employer-facing endpoints to fetch scores
-
-## Roadmap
-
-- Resume plagiarism detection pipeline
-- AI interview orchestration and scoring in `ai/interview.py`
-- REST (or RPC) interface between `frontend/` and `ai/`
-- Employer dashboard for job posting and candidate review
-- Persistent storage (e.g., Postgres) and auth
-- CI/CD and deployment scripts
-
-## Contributing
-
-1. Create a feature branch
-2. Commit small, logically scoped edits
-3. Open a PR and describe the change and test steps
-
-## License
-
-TBD
+## 🔮 Future Scope
+- Multi-language interview support.  
+- AI-driven salary benchmarking.  
+- Candidate personality & culture-fit assessment.  
+- Employer dashboard with deeper analytics.  
