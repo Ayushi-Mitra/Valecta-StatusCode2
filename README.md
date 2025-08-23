@@ -4,6 +4,8 @@ Valecta is an AI-powered recruitment platform built for StatusCode 2 Hackathon.
 It bridges the gap between **candidates** and **employers** with a seamless, automated, and trustworthy hiring process — while still keeping the final decision human.  
 
 ---
+<img width="1919" height="853" alt="image" src="https://github.com/user-attachments/assets/a151d10b-5dd3-49e9-9098-7474a2356f15" />
+
 
 ## ✨ Features
 
@@ -17,7 +19,9 @@ It bridges the gap between **candidates** and **employers** with a seamless, aut
   - Candidate receives a **confidence score** (only visible to employers).  
 - Upload resume for **AI career mapping**:
   - Suggested **current job opportunities**.  
-  - **Future role recommendations** with personalized roadmaps.  
+  - **Future role recommendations** with personalized roadmaps.
+  - 
+<img width="1898" height="1079" alt="image" src="https://github.com/user-attachments/assets/98749da4-eff2-49d7-99e4-b505065f899a" />
 
 ### 🏢 Employer Workflow
 - Post job vacancies with minimal input.  
@@ -25,6 +29,8 @@ It bridges the gap between **candidates** and **employers** with a seamless, aut
 - Employers view:
   - Candidate list + confidence scores.  
   - One-click **“Hire”** action — blending automation with human choice.  
+
+<img width="1893" height="1079" alt="image" src="https://github.com/user-attachments/assets/077067e0-adc0-482f-b0f3-e5454e66f7a0" />
 
 ---
 
@@ -40,75 +46,74 @@ It bridges the gap between **candidates** and **employers** with a seamless, aut
 ## 📂 Project Structure
 
 frontend/
-├── app/
-│   ├── appwrite.js
-│   ├── favicon.ico
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── lineBackground.css
-│   ├── loading.tsx
-│   ├── page.tsx                # Landing page
-│   ├── auth/
-│   │   ├── candidate/
-│   │   │   └── page.tsx        # Candidate login/signup
-│   │   ├── employer/
-│   │   │   └── page.tsx        # Employer login/signup
-│   │   └── page.tsx            # (Legacy, not used)
-│   ├── employer/
-│   │   ├── loading.tsx
-│   │   ├── page.tsx            # Employer dashboard
-│   │   └── jobs/
-│   │       ├── [id]/
-│   │       │   └── edit/
-│   │       │       └── page.tsx
-│   │       └── create/
-│   │           └── page.tsx
-│   ├── candidate/
-│   │   ├── path-predictor/
-│   │   │   └── page.tsx
-│   │   └── dashboard/
-│   │       └── page.tsx        # Candidate dashboard
-│   └── components/
-│       └── ui/
-│           ├── avatar.tsx
-│           ├── badge.tsx
-│           ├── button.tsx
-│           ├── card.tsx
-│           ├── decrypted-text.tsx
-│           ├── dialog.tsx
-│           ├── FloatingShapes.tsx
-│           ├── HeroSection.tsx
-│           ├── input.tsx
-│           ├── LineBackground.tsx
-│           ├── progress.tsx
-│           ├── select.tsx
-│           ├── separator.tsx
-│           ├── tabs.tsx
-│           └── textarea.tsx
-│   ├── lib/
-│   │   ├── config.ts
-│   │   └── utils.ts
-│   └── public/
-│       ├── file.svg
-│       ├── globe.svg
-│       ├── next.svg
-│       ├── vercel.svg
-│       └── window.svg
-├── components.json
-├── eslint.config.mjs
-├── next-env.d.ts
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-├── README.md
-├── tsconfig.json
+  ├── app/
+  │   ├── appwrite.js
+  │   ├── favicon.ico
+  │   ├── globals.css
+  │   ├── layout.tsx
+  │   ├── lineBackground.css
+  │   ├── loading.tsx
+  │   ├── page.tsx                # Landing page
+  │   ├── auth/
+  │   │   ├── candidate/
+  │   │   │   └── page.tsx        # Candidate login/signup
+  │   │   ├── employer/
+  │   │   │   └── page.tsx        # Employer login/signup
+  │   │   └── page.tsx            # (Legacy, not used)
+  │   ├── employer/
+  │   │   ├── loading.tsx
+  │   │   ├── page.tsx            # Employer dashboard
+  │   │   └── jobs/
+  │   │       ├── [id]/
+  │   │       │   └── edit/
+  │   │       │       └── page.tsx
+  │   │       └── create/
+  │   │           └── page.tsx
+  │   ├── candidate/
+  │   │   ├── path-predictor/
+  │   │   │   └── page.tsx
+  │   │   └── dashboard/
+  │   │       └── page.tsx        # Candidate dashboard
+  │   └── components/
+  │       └── ui/
+  │           ├── avatar.tsx
+  │           ├── badge.tsx
+  │           ├── button.tsx
+  │           ├── card.tsx
+  │           ├── decrypted-text.tsx
+  │           ├── dialog.tsx
+  │           ├── FloatingShapes.tsx
+  │           ├── HeroSection.tsx
+  │           ├── input.tsx
+  │           ├── LineBackground.tsx
+  │           ├── progress.tsx
+  │           ├── select.tsx
+  │           ├── separator.tsx
+  │           ├── tabs.tsx
+  │           └── textarea.tsx
+  │   ├── lib/
+  │   │   ├── config.ts
+  │   │   └── utils.ts
+  │   └── public/
+  │       ├── file.svg
+  │       ├── globe.svg
+  │       ├── next.svg
+  │       └── window.svg
+  ├── components.json
+  ├── eslint.config.mjs
+  ├── next-env.d.ts
+  ├── next.config.ts
+  ├── package.json
+  ├── postcss.config.mjs
+  ├── README.md
+  ├── tsconfig.json
 
 ai/
-├── interview.py
-├── requirements.txt
-└── plagiarism/
-    ├── final.py
-    ├── Resume.csv
+  ├── interview.py
+  ├── requirements.txt
+  └── plagiarism/
+      ├── final.py
+      ├── Resume.csv
 
 README.md
 
