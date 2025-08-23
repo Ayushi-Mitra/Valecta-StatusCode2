@@ -11,6 +11,7 @@ export default function ValectaLanding() {
   const [showQuestion, setShowQuestion] = useState(false)
   const [showButtons, setShowButtons] = useState(false)
   const [currentLine, setCurrentLine] = useState(0)
+  const [matrixRain, setMatrixRain] = useState<any[]>([])
   const router = useRouter()
 
   const typewriterLines = ["AI-powered interviews.", "Smarter hiring. Better preparation.", "Redefining recruitment."]
@@ -22,6 +23,19 @@ export default function ValectaLanding() {
     const typewriterTimer = setTimeout(() => setShowTypewriter(true), 4000)
     const questionTimer = setTimeout(() => setShowQuestion(true), 9000)
     const buttonsTimer = setTimeout(() => setShowButtons(true), 11000)
+
+    // Generate matrix rain data on mount (client only)
+    const numColumns = 80
+    const numRows = 20
+    const rain = Array.from({ length: numColumns }).map(() => {
+      return {
+        left: Math.random() * 100,
+        animationDelay: Math.random() * 4,
+        animationDuration: 4 + Math.random() * 3,
+        chars: Array.from({ length: numRows }).map(() => Math.floor(Math.random() * matrixChars.length)),
+      }
+    })
+    setMatrixRain(rain)
 
     return () => {
       clearTimeout(titleTimer)
@@ -47,19 +61,19 @@ export default function ValectaLanding() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 opacity-15">
-        {Array.from({ length: 80 }).map((_, i) => (
+        {matrixRain.map((col, i) => (
           <div
             key={i}
             className="absolute text-primary font-mono text-xs matrix-rain"
             style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${4 + Math.random() * 3}s`,
+              left: `${col.left}%`,
+              animationDelay: `${col.animationDelay}s`,
+              animationDuration: `${col.animationDuration}s`,
             }}
           >
-            {Array.from({ length: 20 }).map((_, j) => (
+            {col.chars.map((charIdx: number, j: number) => (
               <div key={j} className="block">
-                {matrixChars[Math.floor(Math.random() * matrixChars.length)]}
+                {matrixChars[charIdx]}
               </div>
             ))}
           </div>
