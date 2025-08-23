@@ -7,7 +7,7 @@ Valecta is a dual-sided web platform for Candidates and Employers. Candidates ca
 ### Current Status
 
 - Frontend (Next.js App Router) is scaffolded. UI components (badge, button, card, FloatingShapes, HeroSection, LineBackground, avatar, dialog, input, progress, select, separator, tabs, textarea) are implemented. Employer and job management pages/routes have been added (`/employer`, `/employer/jobs/create`, `/employer/jobs/[id]/edit`). Utility/config files and static assets are present.
-- AI module (Python) includes initial plagiarism detection logic in `plagiarism/final.py` and sample resume data in `plagiarism/Resume.csv`. No integration yet; skill extraction and interview logic are not present in the current files.
+- AI module (Python) includes initial plagiarism detection logic in `plagiarism/final.py`, sample resume data in `plagiarism/Resume.csv`, and a new `interview.py` file for upcoming AI interview logic. No integration yet; skill extraction is planned next.
 
 ## Key Features (Planned)
 
@@ -31,6 +31,7 @@ Valecta is a dual-sided web platform for Candidates and Employers. Candidates ca
 ```text
 ai/
   requirements.txt
+  interview.py
   plagiarism/
     final.py
     Resume.csv
@@ -133,10 +134,11 @@ What it does today:
 
 - Plagiarism detection logic is present in `plagiarism/final.py` (see code for usage)
 - Sample resume data is available in `plagiarism/Resume.csv`
+- `interview.py` is present for future AI interview logic
 
 Planned next:
 
-- Integrate skill extraction and AI interview logic
+- Integrate skill extraction and implement AI interview logic in `interview.py`
 - Expose API endpoints for the frontend to consume
 
 ## Product Flows
