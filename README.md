@@ -44,7 +44,7 @@ It bridges the gap between **candidates** and **employers** with a seamless, aut
 ---
 
 ## 📂 Project Structure
-
+```
 frontend/
   ├── app/
   │   ├── appwrite.js
@@ -116,7 +116,7 @@ ai/
       ├── Resume.csv
 
 README.md
-
+```
 ---
 
 ## 🏆 Why Valecta?
