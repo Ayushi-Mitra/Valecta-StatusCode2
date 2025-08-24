@@ -425,6 +425,27 @@ export default function EmployerDashboard() {
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
                               </div>
+                              <Button
+                                size="sm"
+                                variant={job.status === "active" ? "secondary" : "outline"}
+                                className={job.status === "active" ? "bg-yellow-100 text-yellow-700 border-yellow-300 hover:bg-yellow-200" : "bg-green-100 text-green-700 border-green-300 hover:bg-green-200"}
+                                onClick={async () => {
+                                  try {
+                                    await databases.updateDocument(
+                                      DATABASE_ID,
+                                      JOBS_COLLECTION_ID,
+                                      job.$id,
+                                      { status: job.status === "active" ? "done" : "active" }
+                                    );
+                                    setJobPostings((prev) => prev.map(j => j.$id === job.$id ? { ...j, status: j.status === "active" ? "done" : "active" } : j));
+                                    toast.success(`Job marked as ${job.status === "active" ? "done" : "active"}`);
+                                  } catch (err) {
+                                    toast.error("Failed to update job status");
+                                  }
+                                }}
+                              >
+                                {job.status === "active" ? "Mark as done" : "Make active"}
+                              </Button>
                             </div>
                           </div>
                         </CardContent>

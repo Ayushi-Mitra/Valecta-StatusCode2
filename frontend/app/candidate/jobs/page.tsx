@@ -81,7 +81,7 @@ export default function CandidateJobsPage() {
         // Safely convert documents to JobPosting type with proper validation
         const validJobs = response.documents
           .map((doc) => doc as unknown as JobPosting)
-          .filter((jobDoc: JobPosting) => jobDoc.status === "active");
+          .filter((jobDoc: JobPosting) => jobDoc.status === "active" || jobDoc.status === "done");
 
         setJobs(validJobs);
         setFilteredJobs(validJobs);
@@ -487,11 +487,20 @@ export default function CandidateJobsPage() {
                               {jobItem.companyName}
                             </p>
                           </div>
-                          <Link href={`/candidate/jobs/${jobItem.$id}`}>
-                            <Button className="bg-primary hover:bg-primary/90">
-                              Apply
-                            </Button>
-                          </Link>
+                          {jobItem.status === "done" ? (
+                            <div className="flex flex-col items-end">
+                              <Button className="bg-gray-300 text-gray-500 cursor-not-allowed mb-1" disabled title="This job is closed for applications">
+                                Apply
+                              </Button>
+                              <span className="text-xs text-gray-500">Hiring completed</span>
+                            </div>
+                          ) : (
+                            <Link href={`/candidate/jobs/${jobItem.$id}`}>
+                              <Button className="bg-primary hover:bg-primary/90">
+                                Apply
+                              </Button>
+                            </Link>
+                          )}
                         </div>
 
                         <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
