@@ -106,7 +106,7 @@ export default function InterviewSession() {
 
             try {
               console.log("Fetching intro audio for job ID:", jobId);
-              const startInterviewRes = await fetch("/api/start-interviews", {
+              const startInterviewRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/start-interview`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -304,9 +304,9 @@ export default function InterviewSession() {
         console.log("formData", k, v);
       }
 
-      let apiUrl = "/api/interview";
+  let apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/interview`;
       if (questionNum === 5) {
-        apiUrl = "/api/end-interviews";
+  apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/end-interview`;
       }
 
       const res = await fetch(apiUrl, {
@@ -577,7 +577,7 @@ export default function InterviewSession() {
 
     try {
       // Fetch outro audio from the correct endpoint
-      const res = await fetch("/api/end-interview", { method: "GET" });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/end-interview`, { method: "GET" });
 
       if (res.ok) {
         const blob = await res.blob();
@@ -654,7 +654,7 @@ export default function InterviewSession() {
             if (questionCount <= 5) {
               setUploading(true);
             }
-            const saveResponse = await fetch("/api/save-recording", {
+            const saveResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/save-recording`, {
               method: "POST",
               body: formData,
             });

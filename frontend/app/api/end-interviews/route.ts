@@ -3,7 +3,7 @@
 // export async function GET(req: NextRequest) {
 //   try {
 //     // ✅ Call Flask /end-interview (GET)
-//     const aiResponse = await fetch("http://127.0.0.1:5000/end-interview", {
+//     const aiResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/end-interview`, {
 //       method: "GET",
 //     });
 
@@ -133,7 +133,7 @@ Experience Level: ${jobDocument.experienceLevel || ""}
     flaskForm.append("human_answer", humanAnswerText);
 
     // ✅ Call Flask /end-interview
-    const aiResponse = await fetch("http://127.0.0.1:5000/end-interview", {
+  const aiResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/end-interview`, {
       method: "POST",
       body: flaskForm as any,
       headers: flaskForm.getHeaders(),

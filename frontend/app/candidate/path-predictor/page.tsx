@@ -201,7 +201,7 @@ export default function PathPredictor() {
       const formData = new FormData()
       formData.append("file", uploadedFile)
 
-      const res = await fetch("/api/path-predict", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/path-predict`, {
         method: "POST",
         body: formData,
       })

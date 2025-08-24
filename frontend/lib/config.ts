@@ -1,6 +1,6 @@
 export const config = {
   api: {
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE || "http://localhost:5000",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
     endpoints: {
       health: "/health",
       session: {

@@ -52,7 +52,7 @@ Experience Level: ${jobDocument.experienceLevel || ""}
     }
 
     // ✅ Call Flask AI server
-    const aiResponse = await fetch("http://127.0.0.1:5000/start-interview", {
+  const aiResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/start-interview`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ job_description: jobDescription }),

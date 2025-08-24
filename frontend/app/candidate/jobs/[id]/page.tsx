@@ -248,7 +248,7 @@ export default function JobDetailsPage() {
 
       // Start AI evaluation and wait for the result before redirecting
       try {
-        const response = await fetch("/api/fetch-resume-job", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/fetch-resume-job`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

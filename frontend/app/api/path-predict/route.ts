@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     const base64String = buffer.toString("base64");
 
     // ✅ Send base64 to Flask server
-    const flaskResponse = await fetch("http://127.0.0.1:5000/path-predict", {
+  const flaskResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/path-predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ filedata: base64String }),

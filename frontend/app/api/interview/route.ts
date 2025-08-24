@@ -91,7 +91,7 @@
 //     flaskForm.append("model_answer", lastModelAnswer);
 
 //     // ✅ Step 3: Send to Flask
-//     const aiResponse = await fetch("http://127.0.0.1:5000/interview", {
+//     const aiResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/interview`, {
 //       method: "POST",
 //       body: flaskForm as any,
 //       headers: flaskForm.getHeaders(),
@@ -250,7 +250,7 @@ Experience Level: ${jobDocument.experienceLevel || ""}
     flaskForm.append("model_answer", lastModelAnswer);
 
     // ✅ Step 3: Send to Flask
-    const aiResponse = await fetch("http://127.0.0.1:5000/interview", {
+  const aiResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/interview`, {
       method: "POST",
       body: flaskForm as any,
       headers: flaskForm.getHeaders(),
