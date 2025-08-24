@@ -10,7 +10,7 @@ from .interview import start_interview as ai_start_interview, end_interview
 from .plagiarism.final import plagiarism_checker
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True, origins=["http://localhost:3000", "https://valecta-statuscode2-frontend.onrender.com"])
 
 RESUME_FOLDER = "store"
 os.makedirs(RESUME_FOLDER, exist_ok=True)
