@@ -153,6 +153,7 @@ export default function CandidateDashboard() {
       case "under_review":
         return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
       case "ai_interview_pending":
+      case "results_pending":
         return "bg-blue-500/20 text-blue-400 border-blue-500/30";
       case "hired":
         return "bg-green-500/20 text-green-400 border-green-500/30";
@@ -172,6 +173,7 @@ export default function CandidateDashboard() {
       case "under_review":
         return "UNDER REVIEW";
       case "ai_interview_pending":
+      case "results_pending":
         return "INTERVIEW PENDING";
       case "hired":
         return "HIRED";
@@ -274,7 +276,6 @@ export default function CandidateDashboard() {
                 </Card>
               </Link>
             </div>
-            
             <div>
               <Link href="/candidate/path-predictor" className="block">
                 <Card className="overflow-hidden h-full border-2 border-transparent hover:border-primary transition-all duration-300 bg-gradient-to-br from-primary/5 to-primary/10">
@@ -393,6 +394,19 @@ export default function CandidateDashboard() {
                             View Details
                           </Button>
 
+                          {/* Show 'Pending Results' if interview is completed and waiting for results */}
+                          {(app.status === "results_pending" ||
+                            app.status === "ai_interview_pending") && (
+                            <Button
+                              size="sm"
+                              className="text-xs font-medium px-3 py-1 bg-yellow-500 text-white cursor-not-allowed opacity-80"
+                              disabled
+                            >
+                              Pending Results
+                            </Button>
+                          )}
+
+                          {/* Show 'Start Interview' if interview is scheduled */}
                           {app.status === "interview_scheduled" && (
                             <Link
                               href={`/candidate/interview?jobId=${app.jobId}`}

@@ -173,6 +173,7 @@ const client = new OpenAI({
 // in-memory storage
 let lastQuestion: string = "";
 let lastModelAnswer: string = "";
+let scores: number[] = []; // ✅ new storage for scores
 
 async function transcribeAudio(filePath: string): Promise<string> {
   try {
@@ -275,15 +276,22 @@ Experience Level: ${jobDocument.experienceLevel || ""}
             const jsonMatch = part.split("\r\n\r\n")[1];
             if (jsonMatch) {
               parsedJson = JSON.parse(jsonMatch.trim());
+
+              // ✅ Update memory
               lastQuestion = parsedJson.question || "";
               lastModelAnswer = parsedJson.model_answer || "";
+
+              // ✅ Store score if valid
+              const score = parseFloat(parsedJson.score);
+              if (!isNaN(score) && score > 0) {
+                scores.push(score);
+              }
             }
           } else if (part.includes("audio/mpeg")) {
             const idx = part.indexOf("\r\n\r\n");
             if (idx !== -1) {
               const audioData = part.substring(idx + 4).trim();
               if (audioData) {
-                // Convert binary string → base64
                 const audioBuffer = Buffer.from(audioData, "binary");
                 audioBase64 = audioBuffer.toString("base64");
               }
@@ -294,7 +302,8 @@ Experience Level: ${jobDocument.experienceLevel || ""}
 
       return NextResponse.json({
         ...parsedJson,
-        audio: audioBase64, // base64 encoded audio
+        audio: audioBase64,
+        scores, // ✅ include accumulated scores in response
       });
     }
 
@@ -303,13 +312,22 @@ Experience Level: ${jobDocument.experienceLevel || ""}
       const result = (await aiResponse.json()) as {
         question?: string;
         model_answer?: string;
+        score?: string;
         [key: string]: any;
       };
 
       if (result.question) lastQuestion = result.question;
       if (result.model_answer) lastModelAnswer = result.model_answer;
 
-      return NextResponse.json(result);
+      // ✅ Store score if valid
+      if (result.score) {
+        const score = parseFloat(result.score);
+        if (!isNaN(score) && score > 0) {
+          scores.push(score);
+        }
+      }
+
+      return NextResponse.json({ ...result, scores });
     }
 
     throw new Error("Unsupported response type from Flask");
@@ -324,4 +342,5 @@ Experience Level: ${jobDocument.experienceLevel || ""}
     );
   }
 }
+
 

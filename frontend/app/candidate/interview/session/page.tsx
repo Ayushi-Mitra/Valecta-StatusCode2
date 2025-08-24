@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { databases, account } from "../../../appwrite";
+import { Query, ID } from "appwrite";
 
 // Use a separate uploading state for answer upload spinner
 // (optional, but recommended for better UX)
@@ -13,6 +15,20 @@ export default function InterviewSession() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  // Fetch current user ID for Appwrite queries
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const user = await account.get();
+        setCurrentUserId(user.$id);
+      } catch (e) {
+        setCurrentUserId(null);
+      }
+    }
+    fetchUser();
+  }, []);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false); // <-- new state for answer upload
@@ -277,7 +293,6 @@ export default function InterviewSession() {
         return null;
       }
 
-      // Only send jobId and questionNum as per new API
       const formData = new FormData();
       formData.append("jobId", jobId);
       formData.append("questionNum", questionNum.toString());
@@ -287,35 +302,136 @@ export default function InterviewSession() {
         console.log("formData", k, v);
       }
 
-      const res = await fetch("/api/interview", {
+      let apiUrl = "/api/interview";
+      if (questionNum === 5) {
+        apiUrl = "/api/end-interviews";
+      }
+
+      const res = await fetch(apiUrl, {
         method: "POST",
         body: formData,
       });
 
       if (!res.ok) {
-        console.error("Interview API error:", res.statusText);
+        console.error(`API error on ${apiUrl}:`, res.statusText);
         return null;
       }
 
-      // Expect JSON response
       const jsonData = await res.json();
       console.log("Received JSON data:", jsonData);
 
-      // Update question count
-      setUploadsCount((prev) => prev + 1);
-      // Only increment questionCount if less than 5
-      setQuestionCount((prev) => (prev < 5 ? prev + 1 : prev));
+      // For the 5th question, show outro text, play audio, and after audio ends, show toast and redirect
+      if (questionNum === 5) {
+        setCurrentQuestionText(
+          jsonData.outro || "Interview complete. Thank you!"
+        );
+        setInterviewComplete(true);
 
-      // Only display the next question if under the 5-question limit
-      if (jsonData && jsonData.question && questionNum < 5) {
-        setCurrentQuestionText(jsonData.question);
+        // Update Appwrite application status to 'results_pending'
+        if (currentUserId && jobId) {
+          const DATABASE_ID =
+            process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID ||
+            "68a2abe20039e89a5206";
+          const APPLICATIONS_COLLECTION_ID =
+            process.env.NEXT_PUBLIC_APPWRITE_APPLICATIONS_COLLECTION_ID ||
+            "applications";
+          try {
+            // Find the application document for this user and job
+            const appRes = await databases.listDocuments(
+              DATABASE_ID,
+              APPLICATIONS_COLLECTION_ID,
+              [
+                Query.equal("userId", currentUserId),
+                Query.equal("jobId", jobId),
+              ]
+            );
+            if (appRes.documents.length > 0) {
+              const appDoc = appRes.documents[0];
+              await databases.updateDocument(
+                DATABASE_ID,
+                APPLICATIONS_COLLECTION_ID,
+                appDoc.$id,
+                { status: "results_pending" }
+              );
+            }
+          } catch (err) {
+            // Not fatal, but log for debugging
+            console.error(
+              "Failed to update application status to results_pending",
+              err
+            );
+          }
+        }
+
+        if (jsonData.audio) {
+          try {
+            const b64 = jsonData.audio;
+            const binary = atob(b64);
+            const len = binary.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+              bytes[i] = binary.charCodeAt(i);
+            }
+            const audioBlob = new Blob([bytes], { type: "audio/mpeg" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            audio.onended = () => {
+              toast.success(
+                "Interview ended. Thank you for your participation!"
+              );
+              setTimeout(() => {
+                router.push("/candidate/dashboard");
+              }, 1500);
+            };
+            audio.onerror = () => {
+              toast("Interview ended. Thank you for your participation!");
+              setTimeout(() => {
+                router.push("/candidate/dashboard");
+              }, 1500);
+            };
+            audio.play();
+          } catch (err) {
+            console.error("Error decoding/playing base64 outro audio:", err);
+            toast("Interview ended. Thank you for your participation!");
+            setTimeout(() => {
+              router.push("/candidate/dashboard");
+            }, 1500);
+          }
+        } else {
+          toast("Interview ended. Thank you for your participation!");
+          setTimeout(() => {
+            router.push("/candidate/dashboard");
+          }, 1500);
+        }
+        return jsonData;
       }
 
-      // End interview only after 5th answer is uploaded
-      if (questionNum === 5) {
-        setCurrentQuestionText(null); // Clear question after 5th
-        setInterviewComplete(true); // Mark interview as complete
-        await endInterview();
+      // For questions 1-4, play audio if present
+      if (jsonData.audio) {
+        try {
+          const b64 = jsonData.audio;
+          const binary = atob(b64);
+          const len = binary.length;
+          const bytes = new Uint8Array(len);
+          for (let i = 0; i < len; i++) {
+            bytes[i] = binary.charCodeAt(i);
+          }
+          const audioBlob = new Blob([bytes], { type: "audio/mpeg" });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+          audio.play().catch((e) => {
+            console.error("Failed to play AI audio:", e);
+          });
+        } catch (err) {
+          console.error("Error decoding/playing base64 audio:", err);
+        }
+      }
+
+      setUploadsCount((prev) => prev + 1);
+      setQuestionCount((prev) => (prev < 5 ? prev + 1 : prev));
+
+      if (questionNum < 5 && jsonData && jsonData.question) {
+        setCurrentQuestionText(jsonData.question);
       }
 
       return jsonData;
