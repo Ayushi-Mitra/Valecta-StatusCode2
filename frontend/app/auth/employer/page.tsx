@@ -77,7 +77,7 @@ export default function EmployerAuthPage() {
     <div className="min-h-screen bg-background flex items-center justify-center px-6 relative">
       {/* Large Valecta logo at top left */}
       <Link href="/" className="absolute top-8 left-8 flex items-center gap-3 z-10">
-        <Briefcase className="h-12 w-13 text-primary" />
+        <img src="/logo.svg" alt="Valecta Logo" className="h-12 w-12" />
         <h1 className="text-4xl font-extrabold text-foreground tracking-tight">Valecta</h1>
       </Link>
       <div className="w-full max-w-md">

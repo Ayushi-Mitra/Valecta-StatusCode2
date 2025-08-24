@@ -17,6 +17,7 @@ import {
   ChevronDown,
   AlertTriangle,
 } from "lucide-react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -238,7 +239,7 @@ export default function EmployerDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/employer" className="flex items-center gap-2">
-                <Briefcase className="h-8 w-8 text-primary" />
+                <Image src="/logo.svg" alt="Valecta Logo" width={32} height={32} className="h-8 w-8" />
                 <span className="text-xl font-bold text-foreground">Valecta</span>
               </Link>
               <Badge variant="secondary" className="bg-primary/10 text-primary">
@@ -328,21 +329,21 @@ export default function EmployerDashboard() {
                 {filteredJobs.length === 0 ? (
                   <Card className="text-center py-12">
                     <CardContent>
-                      <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-foreground mb-2">No job postings found</h3>
-                      <p className="text-muted-foreground mb-4">
-                        {jobPostings.length === 0 
-                          ? "You haven't created any job postings yet." 
-                          : "No jobs match your current search criteria."}
-                      </p>
-                      {jobPostings.length === 0 && (
-                        <Link href="/employer/jobs/create">
-                          <Button className="bg-primary hover:bg-primary/90">
-                            <Plus className="h-4 w-4 mr-2" />
-                            Create Your First Job
-                          </Button>
-                        </Link>
-                      )}
+                        <Briefcase className="h-12 w-12 mx-auto mb-4 text-primary" />
+                        <h3 className="text-lg font-semibold text-foreground mb-2">No job postings found</h3>
+                        <p className="text-muted-foreground mb-4">
+                            {jobPostings.length === 0 
+                                ? "You haven't created any job postings yet." 
+                                : "No jobs match your current search criteria."}
+                        </p>
+                        {jobPostings.length === 0 && (
+                            <Link href="/employer/jobs/create">
+                                <Button className="bg-primary hover:bg-primary/90">
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Create Your First Job
+                                </Button>
+                            </Link>
+                        )}
                     </CardContent>
                   </Card>
                 ) : (

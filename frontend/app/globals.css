@@ -202,8 +202,8 @@
 .matrix-rain {
   animation: matrix-rain 3s linear infinite, matrix-glow 1.5s ease-in-out infinite;
   color: oklch(0.65 0.18 120);
-  /* Increased opacity from 0.9 to 2 for maximum visibility */
-  opacity: 2;
+  /* Increased opacity from 0.9 to 50 for maximum visibility */
+  opacity: 50;
   will-change: transform, opacity;
   backface-visibility: hidden;
   transform: translateZ(0);
