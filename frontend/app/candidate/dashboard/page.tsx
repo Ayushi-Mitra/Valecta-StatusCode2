@@ -33,6 +33,7 @@ interface JobApplication {
   jobTitle?: string;
   companyName?: string;
   jobExists?: boolean;
+  jobStatus?: string;
 }
 
 export default function CandidateDashboard() {
@@ -97,6 +98,7 @@ export default function CandidateDashboard() {
                   jobTitle: job.role,
                   companyName: job.companyName,
                   jobExists: true,
+                  jobStatus: job.status,
                 };
               } catch (error) {
                 console.log(
@@ -407,8 +409,16 @@ export default function CandidateDashboard() {
                             </Button>
                           )}
 
-                          {/* Show 'Start Interview' if interview is scheduled */}
-                          {app.status === "interview_scheduled" && (
+                          {/* Show 'Hiring completed' if job is done, else allow interview if scheduled */}
+                          {app.jobStatus === "done" ? (
+                            <Button
+                              size="sm"
+                              className="text-xs font-medium px-3 py-1 bg-gray-400 text-white cursor-not-allowed"
+                              disabled
+                            >
+                              Hiring completed
+                            </Button>
+                          ) : app.status === "interview_scheduled" ? (
                             <Link
                               href={`/candidate/interview?jobId=${app.jobId}`}
                             >
@@ -419,7 +429,7 @@ export default function CandidateDashboard() {
                                 Start Interview
                               </Button>
                             </Link>
-                          )}
+                          ) : null}
 
                           {app.status === "applied" && (
                             <Button
