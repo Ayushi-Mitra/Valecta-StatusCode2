@@ -3,7 +3,7 @@ import base64
 import json
 from pathlib import Path
 from flask import Flask, request, jsonify, after_this_request, Response, send_file
-from main import skills_extract, check_with_jd, path_predictor
+from .main import skills_extract, check_with_jd, path_predictor
 from interview import ai_client, ai_review, text_to_speech
 from interview import start_interview as ai_start_interview, end_interview
 from plagiarism.final import plagiarism_checker
