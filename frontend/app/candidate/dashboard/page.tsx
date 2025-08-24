@@ -173,8 +173,9 @@ export default function CandidateDashboard() {
       case "under_review":
         return "UNDER REVIEW";
       case "ai_interview_pending":
-      case "results_pending":
         return "INTERVIEW PENDING";
+      case "results_pending":
+        return "Results Pending"
       case "hired":
         return "HIRED";
       case "applied":
