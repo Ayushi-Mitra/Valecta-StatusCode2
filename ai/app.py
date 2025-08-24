@@ -57,21 +57,33 @@ def resume_review():
 
 @app.route('/interview', methods=['POST'])
 def interview():
-    if "file" not in request.files:
-        return jsonify({"error": "No file part"}), 400
+    # data = request.get_json()
+        
+    # if not data or "human_answer_text" not in data or "job_description" not in data:
+    #     return jsonify({"error": "Invalid request"}), 400
     
-    file = request.files["file"]
-    save_path = os.path.join(VOICE_FOLDER, "response.mp3")
-    file.save(save_path)
 
+    # data = request.form.to_dict()
+    # question = data["question"]
+    # model_answer = data["model_answer"]
+    # human_answer = data["human_answer_text"]
+    # job_description = data["job_description"]
+    # Get form-data
     data = request.form.to_dict()
-    question = data["question"]
-    model_answer = data["model_answer"]
+
+    # Validate inputs
+    if not data or "human_answer_text" not in data or "job_description" not in data:
+        return jsonify({"error": "Invalid request"}), 400
+
+    # Extract safely
+    question = data.get("question", "")
+    model_answer = data.get("model_answer", "")
+    human_answer = data["human_answer_text"]
     job_description = data["job_description"]
 
-    score = ai_review(job_description, question, model_answer, save_path)
+    score = ai_review(job_description, question, model_answer, human_answer)
 
-    qna = ai_client(job_description, save_path)
+    qna = ai_client(job_description, human_answer)
     question = qna.get("question")
     model_answer = qna.get("answer")
 
@@ -81,7 +93,6 @@ def interview():
     @after_this_request
     def remove_files(response):
         try:
-            os.remove(save_path)
             os.remove(ai_voice_path)
         except Exception as e:
             print("File delete error: ", e)
@@ -156,11 +167,45 @@ def path_predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route("/end-interview", methods=["GET"])
+# @app.route("/end-interview", methods=["GET"])
+# def interview_end():
+#     file_path = Path(__file__).parent / AI_VOICE_FOLDER / "outro.mp3"
+#     ai_outro_text = end_interview()
+#     text_to_speech(ai_outro_text, file_path)
+
+#     @after_this_request
+#     def remove_files(response):
+#         try:
+#             os.remove(file_path)
+#         except Exception as e:
+#             print("File delete error: ", e)
+
+#         return response
+
+#     return send_file(file_path, as_attachment=True)
+
+@app.route("/end-interview", methods=["POST"])
 def interview_end():
+    # ✅ Get form-data
+    data = request.form.to_dict()
+
+    if not data or "human_answer" not in data or "job_description" not in data:
+        return jsonify({"error": "Invalid request"}), 400
+
+    job_description = data["job_description"]
+    question = data.get("question", "")
+    model_answer = data.get("model_answer", "")
+    human_answer = data["human_answer"]
+
+    # ✅ Step 1: Score the last answer
+    score = ai_review(job_description, question, model_answer, human_answer)
+
+    # ✅ Step 2: Generate outro text
+    outro_text = end_interview(job_description, human_answer)
+
+    # ✅ Step 3: Generate outro audio
     file_path = Path(__file__).parent / AI_VOICE_FOLDER / "outro.mp3"
-    ai_outro_text = end_interview()
-    text_to_speech(ai_outro_text, file_path)
+    text_to_speech(outro_text, file_path)
 
     @after_this_request
     def remove_files(response):
@@ -168,10 +213,33 @@ def interview_end():
             os.remove(file_path)
         except Exception as e:
             print("File delete error: ", e)
-
         return response
 
-    return send_file(file_path, as_attachment=True)
+    with open(file_path, "rb") as f:
+        file_bytes = f.read()
+
+    boundary = "valecta"
+
+    # ✅ JSON payload (outro + score)
+    json_part = (
+        f"--{boundary}\r\n"
+        f"Content-Type: application/json\r\n\r\n"
+        f"{json.dumps({ 'outro': outro_text, 'score': score })}\r\n"
+    )
+
+    # ✅ Audio part
+    file_part = (
+        f"--{boundary}\r\n"
+        f"Content-Type: audio/mpeg\r\n"
+        f"Content-Disposition: attachment; filename=outro.mp3\r\n\r\n"
+    )
+
+    closing = f"\r\n--{boundary}--\r\n"
+
+    body = json_part.encode() + file_part.encode() + file_bytes + closing.encode()
+
+    return Response(body, mimetype=f"multipart/mixed; boundary={boundary}")
+
     
 if __name__ == "__main__":
     app.run(debug=True)

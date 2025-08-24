@@ -1,3 +1,4 @@
+
 from openai import OpenAI
 from pathlib import Path
 from dotenv import load_dotenv
@@ -15,6 +16,8 @@ class Interview_question(BaseModel):
 class Grade(BaseModel):
     score: float
 
+class Outro(BaseModel):
+    outro: str
 
 def speech_to_text(audio_file_path: str):
     audio_file = open(audio_file_path, "rb")
@@ -52,10 +55,40 @@ def start_interview(job_description: str):
     parsed = json.loads(response.choices[0].message.content)
     return parsed.get("ai_starter")
 
-def end_interview():
-    SYSTEM_PROMPT = """
-        You are an AI interviewer. Your job is to end the interview. You should prepare an outro where you give best wishes to the candidate for his future prospects and also ask him to wait for response from our side.
-        You don't need any user input. You need to give output in the proper JSON format.
+# def end_interview():
+#     SYSTEM_PROMPT = """
+#         You are an AI interviewer. Your job is to end the interview. You should prepare an outro where you give best wishes to the candidate for his future prospects and also ask him to wait for response from our side.
+#         You don't need any user input. You need to give output in the proper JSON format.
+
+#         Proper JSON Format:
+#         {{
+#             "outro": string
+#         }}
+#     """
+
+#     response = client.chat.completions.create(
+#         model="gpt-4.1",
+#         messages=[
+#             { "role": "system", "content": SYSTEM_PROMPT }
+#         ]
+#     )
+
+#     parsed = json.loads(response.choices[0].message.content)
+#     return parsed.get("outro")
+
+def end_interview(job_description: str, user_answer: str):
+    SYSTEM_PROMPT = f"""
+        You are an AI interviewer. Your job is to end the interview.
+        You should prepare an outro where you:
+        - Give best wishes to the candidate for their future prospects.
+        - Acknowledge something relevant from their last answer if possible.
+        - Politely tell them to wait for further communication from our side.
+        
+        The outro must be personalized based on:
+        - The job description: {job_description}
+        - The candidate's last answer: {user_answer}
+
+        You must output in proper JSON format only.
 
         Proper JSON Format:
         {{
@@ -63,25 +96,24 @@ def end_interview():
         }}
     """
 
-    response = client.chat.completions.create(
+    response = client.beta.chat.completions.parse(
         model="gpt-4.1",
         messages=[
-            { "role": "system", "content": SYSTEM_PROMPT }
-        ]
+            { "role": "system", "content": SYSTEM_PROMPT },
+            { "role": "user", "content": user_answer }
+        ],
+        response_format=Outro  # <-- define a JSON schema like Interview_question
     )
 
-    parsed = json.loads(response.choices[0].message.content)
-    return parsed.get("outro")
+    return json.loads(response.choices[0].message.content).get("outro")
 
-def ai_client(job_description: str, user_answer_path: str):
-    user_answer = speech_to_text(user_answer_path)
 
+def ai_client(job_description: str, user_answer: str):
     SYSTEM_PROMPT = f"""
         You are an AI interviewer. Your job is to ask a question and also provide its model answer.
         You should behave in a way that a real human interviewer does. Like instead of asking pre-formulated questions, you should make questions having the context of the previous answer the candidate give, and you might ask on something that particularly seems interesting while being related at the same time.
         You will get the candidate's previous answer as an user input.
         When you make the question, it should be formulated in such a way that it matches the requirement for the job.
-        Also change the difficulty level of the question depending on the candidate's performance in the previous answers.
         The job description is provided here:
         {job_description}
         You have to follow the Output JSON properly.
@@ -96,9 +128,7 @@ def ai_client(job_description: str, user_answer_path: str):
     )
     return(json.loads(response.choices[0].message.content))
 
-def ai_review(job_description: str, question: str, model_answer: str, answer_audio_path: str) -> float:
-    audio_text = speech_to_text(answer_audio_path)
-
+def ai_review(job_description: str, question: str, model_answer: str, audio_text: str) -> float:
     SYSTEM_PROMPT = f"""
         You are an intelligent AI supervisor that reviews the answer of a candidate against a model answer and grade their answer.
         Scoring rules:
