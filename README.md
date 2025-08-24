@@ -1,49 +1,62 @@
 # Valecta
 
 Valecta is an AI-powered recruitment platform built for StatusCode 2 Hackathon.  
-It bridges the gap between **candidates** and **employers** with a seamless, automated, and trustworthy hiring process — while still keeping the final decision human.  
+It bridges the gap between **candidates** and **employers** with a seamless, automated, and trustworthy hiring process — while still keeping the final decision human.
 
 ---
-<img width="1919" height="853" alt="image" src="https://github.com/user-attachments/assets/a151d10b-5dd3-49e9-9098-7474a2356f15" />
 
+<img width="1919" height="853" alt="image" src="https://github.com/user-attachments/assets/a151d10b-5dd3-49e9-9098-7474a2356f15" />
 
 ## ✨ Features
 
 ### 👨‍💻 Candidate Workflow
-- Browse job postings and apply with a resume.  
+
+- Browse job postings and apply with a resume.
 - AI verifies:
-  - **Skill match** – checks if required skills align with the resume.  
-  - **Certificate authenticity** – prevents fake/plagiarized resumes.  
+  - **Skill match** – checks if required skills align with the resume.
+  - **Certificate authenticity** – prevents fake/plagiarized resumes.
 - If validated, candidate proceeds to an **AI-powered interview**:
-  - Audio-based adaptive questions (each depends on the previous response).  
-  - Candidate receives a **confidence score** (only visible to employers).  
+  - Audio-based adaptive questions (each depends on the previous response).
+  - Candidate receives a **confidence score** (only visible to employers).
 - Upload resume for **AI career mapping**:
-  - Suggested **current job opportunities**.  
+  - Suggested **current job opportunities**.
   - **Future role recommendations** with personalized roadmaps.
-  - 
-<img width="1898" height="1079" alt="image" src="https://github.com/user-attachments/assets/98749da4-eff2-49d7-99e4-b505065f899a" />
+  - <img width="1898" height="1079" alt="image" src="https://github.com/user-attachments/assets/98749da4-eff2-49d7-99e4-b505065f899a" />
 
 ### 🏢 Employer Workflow
-- Post job vacancies with minimal input.  
-- AI automatically evaluates candidates and assigns confidence scores.  
+
+- Post job vacancies with minimal input.
+- AI automatically evaluates candidates and assigns confidence scores.
 - Employers view:
-  - Candidate list + confidence scores.  
-  - One-click **“Hire”** action — blending automation with human choice.  
+  - Candidate list + confidence scores.
+  - One-click **“Hire”** action — blending automation with human choice.
 
 <img width="1893" height="1079" alt="image" src="https://github.com/user-attachments/assets/077067e0-adc0-482f-b0f3-e5454e66f7a0" />
 
 ---
 
-## 🚀 Tech Stack
-- **Frontend**: Next.js, Tailwind CSS, ShadCN UI  
-- **Backend**: Node.js / Express  
-- **AI Models**: Python (skills matcher, certificate verification, adaptive interview agent, career roadmap generator)  
-- **Database & Auth**: Appwrite  
-- **Deployment**: Vercel + Render (or relevant hosting services)  
+## 🏃‍♂️ Run Locally
 
----
+### Frontend (Next.js)
+
+```bash
+cd frontend
+npm install
+npm run dev
+# App runs on http://localhost:3000
+```
+
+### AI Server (Flask)
+
+```bash
+cd ai
+pip install -r requirements.txt
+python app.py
+# Flask server runs on http://127.0.0.1:5000
+```
 
 ## 📂 Project Structure
+
 ```
 frontend/
   ├── app/
@@ -117,18 +130,21 @@ ai/
 
 README.md
 ```
+
 ---
 
 ## 🏆 Why Valecta?
-- **Real-world relevance** → Tackles one of the biggest problems in hiring: resume fraud + skill mismatch.  
-- **End-to-end automation** → From resume parsing to interview to employer shortlist.  
-- **Scalable** → Can be deployed for universities, startups, and enterprises.  
-- **Perfect balance** → AI handles the heavy lifting, but final hiring choice stays human.  
+
+- **Real-world relevance** → Tackles one of the biggest problems in hiring: resume fraud + skill mismatch.
+- **End-to-end automation** → From resume parsing to interview to employer shortlist.
+- **Scalable** → Can be deployed for universities, startups, and enterprises.
+- **Perfect balance** → AI handles the heavy lifting, but final hiring choice stays human.
 
 ---
 
 ## 🔮 Future Scope
-- Multi-language interview support.  
-- AI-driven salary benchmarking.  
-- Candidate personality & culture-fit assessment.  
-- Employer dashboard with deeper analytics.  
+
+- Multi-language interview support.
+- AI-driven salary benchmarking.
+- Candidate personality & culture-fit assessment.
+- Employer dashboard with deeper analytics.
