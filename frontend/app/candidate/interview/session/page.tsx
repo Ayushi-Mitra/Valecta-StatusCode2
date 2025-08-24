@@ -16,6 +16,8 @@ export default function InterviewSession() {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  // Array to store scores from each fetch
+  const [scores, setScores] = useState<number[]>([]);
 
   // Fetch current user ID for Appwrite queries
   useEffect(() => {
@@ -320,6 +322,16 @@ export default function InterviewSession() {
       const jsonData = await res.json();
       console.log("Received JSON data:", jsonData);
 
+      // Store score if present and >= 0
+      if (
+        jsonData &&
+        typeof jsonData.score !== "undefined" &&
+        !isNaN(Number(jsonData.score)) &&
+        Number(jsonData.score) >= 0
+      ) {
+        setScores((prev) => [...prev, Number(jsonData.score)]);
+      }
+
       // For the 5th question, show outro text, play audio, and after audio ends, show toast and redirect
       if (questionNum === 5) {
         setCurrentQuestionText(
@@ -327,11 +339,10 @@ export default function InterviewSession() {
         );
         setInterviewComplete(true);
 
-        // Update Appwrite application status to 'results_pending'
+        // Update Appwrite application status to 'results_pending' and store scores/average
         if (currentUserId && jobId) {
           const DATABASE_ID =
-            process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID ||
-            "68a2abe20039e89a5206";
+            process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
           const APPLICATIONS_COLLECTION_ID =
             process.env.NEXT_PUBLIC_APPWRITE_APPLICATIONS_COLLECTION_ID ||
             "applications";
@@ -347,20 +358,41 @@ export default function InterviewSession() {
             );
             if (appRes.documents.length > 0) {
               const appDoc = appRes.documents[0];
+              // Calculate average score
+              const validScores = scores.filter(
+                (s) => typeof s === "number" && s >= 0
+              );
+              const averageScore =
+                validScores.length > 0
+                  ? validScores.reduce((a, b) => a + b, 0) / validScores.length
+                  : 0;
               await databases.updateDocument(
                 DATABASE_ID,
                 APPLICATIONS_COLLECTION_ID,
                 appDoc.$id,
-                { status: "results_pending" }
+                {
+                  status: "results_pending",
+                  scores: validScores,
+                  averageScore: averageScore,
+                }
               );
             }
           } catch (err) {
             // Not fatal, but log for debugging
             console.error(
-              "Failed to update application status to results_pending",
+              "Failed to update application status to results_pending and save scores/average",
               err
             );
           }
+        }
+        // Calculate average score utility
+        function getAverageScore(scores: number[]) {
+          if (!scores || scores.length === 0) return 0;
+          const validScores = scores.filter(
+            (s) => typeof s === "number" && s >= 0
+          );
+          if (validScores.length === 0) return 0;
+          return validScores.reduce((a, b) => a + b, 0) / validScores.length;
         }
 
         if (jsonData.audio) {
