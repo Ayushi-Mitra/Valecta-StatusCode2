@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Briefcase, User, ArrowLeft, Calendar, TrendingUp } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -200,7 +201,7 @@ export default function CandidateDashboard() {
                 href="/candidate/dashboard"
                 className="flex items-center gap-2"
               >
-                <Briefcase className="h-8 w-8 text-primary" />
+                <Image src="/logo.svg" alt="Valecta Logo" width={32} height={32} className="h-8 w-8" />
                 <h1 className="text-2xl font-bold text-foreground">Valecta</h1>
               </Link>
             </div>

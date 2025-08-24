@@ -402,7 +402,7 @@ export default function JobDetailsPage() {
                   href="/candidate/dashboard"
                   className="flex items-center gap-2"
                 >
-                  <Briefcase className="h-8 w-8 text-primary" />
+                  <img src="/logo.svg" alt="Valecta Logo" className="h-8 w-8" />
                   <h1 className="text-2xl font-bold text-foreground">
                     Valecta
                   </h1>
@@ -613,7 +613,7 @@ export default function JobDetailsPage() {
                 href="/candidate/dashboard"
                 className="flex items-center gap-2"
               >
-                <Briefcase className="h-8 w-8 text-primary" />
+                <img src="/logo.svg" alt="Valecta Logo" className="h-8 w-8" />
                 <h1 className="text-2xl font-bold text-foreground">Valecta</h1>
               </Link>
             </div>

@@ -255,13 +255,13 @@ export default function CandidateJobsPage() {
               >
                 <ArrowLeft className="h-5 w-5" />
               </Link>
-              <Link
+                <Link
                 href="/candidate/dashboard"
                 className="flex items-center gap-2"
-              >
-                <Briefcase className="h-8 w-8 text-primary" />
+                >
+                <img src="/logo.svg" alt="Valecta Logo" className="h-8 w-8" />
                 <h1 className="text-2xl font-bold text-foreground">Valecta</h1>
-              </Link>
+                </Link>
             </div>
             <div className="flex items-center gap-4">
               <div className="relative">
